@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <!-- reset css -->
-        <script type="text/javascript" src="./jquery.min.js"></script>
         <style>
             body {
                 background-color: white;
@@ -58,24 +56,24 @@
             var data = imgData.data;
             ctx.fillStyle = "red";
 
-            var DrawPixel = function(x, y) {
+            var drawPixel = function(x, y) {
                 ctx.fillRect(x, y, 1, 1);
             };
 
-            var DrawCirle = function(x0, y0, radius) {
+            var drawCirle = function(x0, y0, radius) {
                 var x = radius;
                 var y = 0;
                 var radiusError = 1 - x;
 
                 while (x >= y) {
-                    DrawPixel(x + x0, y + y0);
-                    DrawPixel(y + x0, x + y0);
-                    DrawPixel(-x + x0, y + y0);
-                    DrawPixel(-y + x0, x + y0);
-                    DrawPixel(-x + x0, -y + y0);
-                    DrawPixel(-y + x0, -x + y0);
-                    DrawPixel(x + x0, -y + y0);
-                    DrawPixel(y + x0, -x + y0);
+                    drawPixel(x + x0, y + y0);
+                    drawPixel(y + x0, x + y0);
+                    drawPixel(-x + x0, y + y0);
+                    drawPixel(-y + x0, x + y0);
+                    drawPixel(-x + x0, -y + y0);
+                    drawPixel(-y + x0, -x + y0);
+                    drawPixel(x + x0, -y + y0);
+                    drawPixel(y + x0, -x + y0);
                     y++;
 
                     if (radiusError < 0) {
@@ -86,8 +84,8 @@
                     }
                 }
             };
-
-            $("#submit").click(function(event) {
+            const submitButton = document.getElementById("submit");
+            submitButton.addEventListener("click", event => {
                 event.preventDefault();
                 var x = document.getElementById("x").value;
                 var y = document.getElementById("y").value;
@@ -95,7 +93,7 @@
                 x = parseInt(x);
                 y = parseInt(y);
                 r = parseInt(r);
-                DrawCirle(x, y, r);
+                drawCirle(x, y, r);
             });
         </script>
     </body>
