@@ -15,9 +15,12 @@
             .container {
                 width: 100%;
             }
-            .trai,
+            .trai {
+                width: 20%;
+                float: left;
+            }
             .phai {
-                width: 50%;
+                width: 80%;
                 float: left;
             }
         </style>
@@ -31,7 +34,9 @@
                         Tọa độ
                     </p>
                     <div>
-                        x<input type="number" name="x" id="x" /> y<input
+                        x<input type="number" name="x" id="x" />
+                        <br>
+                         y<input
                             type="number"
                             name="x"
                             id="y"
@@ -56,11 +61,11 @@
             var data = imgData.data;
             ctx.fillStyle = "red";
 
-            var drawPixel = function(x, y) {
+            var drawPixel = (x, y) => {
                 ctx.fillRect(x, y, 1, 1);
             };
 
-            var drawCirle = function(x0, y0, radius) {
+            var drawCirle = (x0, y0, radius) => {
                 var x = radius;
                 var y = 0;
                 var radiusError = 1 - x;
