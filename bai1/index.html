@@ -35,18 +35,14 @@
                     </p>
                     <div>
                         x<input type="number" name="x" id="x" />
-                        <br>
-                         y<input
-                            type="number"
-                            name="x"
-                            id="y"
-                        />
+                        <br />
+                        y<input type="number" name="x" id="y" />
                     </div>
                     <div>Bán kính <input type="number" name="r" id="r" /></div>
                     <div>
                         <p>Thực hiện</p>
                         <button id="submit">Thực hiện</button>
-                        <button>Reset</button>
+                        <button id="reset">Reset</button>
                     </div>
                 </div>
             </div>
@@ -90,6 +86,7 @@
                 }
             };
             const submitButton = document.getElementById("submit");
+            const resetButton = document.getElementById("reset");
             submitButton.addEventListener("click", event => {
                 event.preventDefault();
                 var x = document.getElementById("x").value;
@@ -99,6 +96,10 @@
                 y = parseInt(y);
                 r = parseInt(r);
                 drawCirle(x, y, r);
+            });
+
+            resetButton.addEventListener("click", event => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
             });
         </script>
     </body>
