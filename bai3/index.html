@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body {
+                background-color: white;
+            }
+            canvas {
+                border: 1px solid red;
+                width: 100%;
+                height: 600px;
+                display: block;
+                margin: 0 auto;
+                transform: rotateX(180deg);
+            }
+            .container {
+                width: 100%;
+            }
+            .trai {
+                width: 20%;
+                float: left;
+            }
+            .phai {
+                width: 80%;
+                float: left;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="trai">
+                <p>Nhập vào tọa dộ x - y</p>
+                <p>Nhập vào % khoảng 0 ~ 100</p>
+                <div>
+                    <p>
+                        Tọa độ
+                    </p>
+                    <div>
+                        x<input type="number" name="x" id="x" />
+                        <br />
+                        y<input type="number" name="x" id="y" />
+                    </div>
+                    <div>Bán kính <input type="number" name="r" id="r" /></div>
+                    <div><input type="color" id="color" /></div>
+                    <hr />
+                    <div>
+                        <p>Đường thẳng</p>
+                        <div>
+                            <input
+                                type="number"
+                                name="x1"
+                                id="x1"
+                                placeholder="x1"
+                            />
+                            <input
+                                type="number"
+                                name="y1"
+                                id="y1"
+                                placeholder="y1"
+                            />
+                            <input
+                                type="number"
+                                name="x2"
+                                id="x2"
+                                placeholder="x2"
+                            />
+                            <input
+                                type="number"
+                                name="y2"
+                                id="y2"
+                                placeholder="y2"
+                            />
+                            <div><input type="color" id="color2" /></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div>Tịnh tiến</div>
+                        <input type="number" id="tx" placeholder="tx" />
+                        <input type="number" id="ty" placeholder="ty" />
+                    </div>
+                    <div>
+                        <div>Scale</div>
+                        <input type="number" id="scale-number" placeholder="Scale">
+                    </div>
+                    <div>
+                        <p>Thực hiện</p>
+                        <button id="submit">Thực hiện</button>
+                        <button id="reset">Reset</button>
+                        <button id="tinh-tien">Tịnh tiến</button>
+                        <button id="scale">Scale</button>
+                    </div>
+                </div>
+            </div>
+            <div class="phai">
+                <canvas id="canvas"></canvas>
+            </div>
+        </div>
+        <script src="./ber.js"></script>
+
+        <script>
+            const submitButton = document.getElementById("submit");
+            const resetButton = document.getElementById("reset");
+            const tinhTienButton = document.getElementById("tinh-tien");
+            const scaleButton = document.getElementById('scale');
+
+            var canvas = document.querySelector("#canvas");
+            console.log(canvas.width);
+            console.log(canvas.height);
+            var ctx = canvas.getContext("2d");
+            var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            var data = imgData.data;
+            ctx.fillStyle = "red";
+
+            var drawPixel = (x, y) => {
+                ctx.fillRect(x, y, 1, 1);
+            };
+
+            var drawCirle = (x0, y0, radius) => {
+                var x = radius;
+                var y = 0;
+                var radiusError = 1 - x;
+
+                while (x >= y) {
+                    drawPixel(x + x0, y + y0);
+                    drawPixel(y + x0, x + y0);
+                    drawPixel(-x + x0, y + y0);
+                    drawPixel(-y + x0, x + y0);
+                    drawPixel(-x + x0, -y + y0);
+                    drawPixel(-y + x0, -x + y0);
+                    drawPixel(x + x0, -y + y0);
+                    drawPixel(y + x0, -x + y0);
+                    y++;
+
+                    if (radiusError < 0) {
+                        radiusError += 2 * y + 1;
+                    } else {
+                        x--;
+                        radiusError += 2 * (y - x + 1);
+                    }
+                }
+            };
+
+            submitButton.addEventListener("click", event => {
+                event.preventDefault();
+                var x = document.getElementById("x").value;
+                var y = document.getElementById("y").value;
+                var r = document.getElementById("r").value;
+                var color = document.getElementById("color").value;
+                x = parseInt(x);
+                y = parseInt(y);
+                r = parseInt(r);
+                if ((x, y, r)) {
+                    x = (x / 100) * canvas.width;
+                    y = (y / 100) * canvas.height;
+                    r = (r / 100) * canvas.width;
+                    ctx.fillStyle = color;
+                    drawCirle(x, y, r);
+                }
+
+                var x1 = document.getElementById("x1").value;
+                var y1 = document.getElementById("y1").value;
+                var x2 = document.getElementById("x2").value;
+                var y2 = document.getElementById("y2").value;
+                var color2 = document.getElementById("color2").value;
+                x1 = parseInt(x1);
+                y1 = parseInt(y1);
+                x2 = parseInt(x2);
+                y2 = parseInt(y2);
+                if ((x1, y1, x2, y2)) {
+                    x1 = (x1 / 100) * canvas.width;
+                    y1 = (y1 / 100) * canvas.height;
+                    x2 = (x2 / 100) * canvas.width;
+                    y2 = (y2 / 100) * canvas.height;
+                    ctx.fillStyle = color2;
+                    let bresenham = Bresenham.plot(x1, y1, x2, y2);
+                    console.log(bresenham);
+                    bresenham.forEach(element => {
+                        drawPixel(element.x, element.y);
+                    });
+                }
+            });
+
+            resetButton.addEventListener("click", event => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            });
+
+            tinhTienButton.addEventListener("click", event => {
+                console.log("hlelo ngga");
+                var tx = document.getElementById("tx").value;
+                var ty = document.getElementById("ty").value;
+
+                tx = parseInt(tx);
+                ty = parseInt(ty);
+                tx = (tx / 100) * canvas.width;
+                ty = (ty / 100) * canvas.height;
+                
+                // hinh tron
+                var x = document.getElementById("x").value;
+                var y = document.getElementById("y").value;
+                var r = document.getElementById("r").value;
+                var color = document.getElementById("color").value;
+                x = parseInt(x);
+                y = parseInt(y);
+                r = parseInt(r);
+                if ((x, y, r)) {
+                    x = (x / 100) * canvas.width;
+                    y = (y / 100) * canvas.height;
+                    r = (r / 100) * canvas.width;
+                    x += tx;
+                    y += ty;
+                    ctx.fillStyle = color;
+                    drawCirle(x, y, r);
+                }
+                // Duong thang
+                var x1 = document.getElementById("x1").value;
+                var y1 = document.getElementById("y1").value;
+                var x2 = document.getElementById("x2").value;
+                var y2 = document.getElementById("y2").value;
+                var color2 = document.getElementById("color2").value;
+                x1 = parseInt(x1);
+                y1 = parseInt(y1);
+                x2 = parseInt(x2);
+                y2 = parseInt(y2);
+                if ((x1, y1, x2, y2)) {
+                    x1 = (x1 / 100) * canvas.width;
+                    y1 = (y1 / 100) * canvas.height;
+                    x2 = (x2 / 100) * canvas.width;
+                    y2 = (y2 / 100) * canvas.height;
+                    x1+=tx;
+                    y1+=ty;
+                    x2+=tx;
+                    y2+=ty;
+                    ctx.fillStyle = color2;
+                    let bresenham = Bresenham.plot(x1, y1, x2, y2);
+                    console.log(bresenham);
+                    bresenham.forEach(element => {
+                        drawPixel(element.x, element.y);
+                    });
+                }
+            });
+
+
+            scaleButton.addEventListener('click',event=>{
+                var scaleNumber= document.getElementById('scale-number').value;
+                scaleNumber = parseFloat(scaleNumber);
+                
+                var x = document.getElementById("x").value;
+                var y = document.getElementById("y").value;
+                var r = document.getElementById("r").value;
+                var color = document.getElementById("color").value;
+                x = parseInt(x);
+                y = parseInt(y);
+                r = parseInt(r);
+                if ((x, y, r)) {
+                    x = (x / 100) * canvas.width;
+                    y = (y / 100) * canvas.height;
+                    r = (r / 100) * canvas.width;
+                    r*= scaleNumber;
+
+                    ctx.fillStyle = color;
+                    drawCirle(x, y, r);
+                }
+            });
+        </script>
+    </body>
+</html>
